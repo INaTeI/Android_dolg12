@@ -2,7 +2,7 @@ package com.example.android_dolg1.ui.screens.detail
 
 import androidx.compose.foundation.layout.*
 
-import androidx.compose.material.*
+
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -22,7 +22,7 @@ fun CountryDetailScreen(
     viewModel: CountryViewModel = hiltViewModel()
 ) {
 
-    val state by viewModel.detailState.collectAsState()
+    val state = viewModel.detailState
 
     LaunchedEffect(code) {
         viewModel.loadCountry(code)
