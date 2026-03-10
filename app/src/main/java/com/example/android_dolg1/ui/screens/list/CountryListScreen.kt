@@ -2,7 +2,7 @@ package com.example.android_dolg1.ui.screens.list
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.material.*
+
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -23,7 +23,7 @@ fun CountryListScreen(
     viewModel: CountryViewModel = hiltViewModel()
 ) {
 
-    val state by viewModel.countriesState.collectAsState()
+    val state = viewModel.countriesState
 
     LaunchedEffect(Unit) {
         viewModel.loadCountries()
