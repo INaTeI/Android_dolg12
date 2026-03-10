@@ -6,44 +6,41 @@ import com.example.android_dolg1.data.repository.CountryRepositoryImpl
 import com.example.android_dolg1.domain.model.Country
 import com.example.android_dolg1.ui.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class CountryViewModel @Inject constructor(
     private val repository: CountryRepositoryImpl
 ) : ViewModel() {
 
-    private val _countriesState =
-        MutableStateFlow<UiState<List<Country>>>(UiState.Loading)
 
-    val countriesState: StateFlow<UiState<List<Country>>> = _countriesState
+    var countriesState by mutableStateOf<UiState<List<Country>>>(UiState.Loading)
+        private set
 
-
-    private val _detailState =
-        MutableStateFlow<UiState<Country>>(UiState.Loading)
-
-    val detailState: StateFlow<UiState<Country>> = _detailState
+    var detailState by mutableStateOf<UiState<Country>>(UiState.Loading)
+        private set
 
 
     fun loadCountries() {
 
         viewModelScope.launch {
 
-            _countriesState.value = UiState.Loading
+            countriesState = UiState.Loading
 
             try {
 
                 val countries = repository.getCountries()
-
-                _countriesState.value = UiState.Success(countries)
+                countriesState = UiState.Success(countries)
 
             } catch (e: Exception) {
 
-                _countriesState.value =
-                    UiState.Error("Failed to load countries")
+                countriesState = UiState.Error("Failed to load countries")
 
             }
         }
@@ -54,18 +51,16 @@ class CountryViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            _detailState.value = UiState.Loading
+            detailState = UiState.Loading
 
             try {
 
                 val country = repository.getCountry(code)
-
-                _detailState.value = UiState.Success(country)
+                detailState = UiState.Success(country)
 
             } catch (e: Exception) {
 
-                _detailState.value =
-                    UiState.Error("Failed to load country")
+                detailState = UiState.Error("Failed to load country")
             }
         }
     }
